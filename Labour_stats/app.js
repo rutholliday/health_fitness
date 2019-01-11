@@ -1,8 +1,18 @@
-var parse = d3.time.format("%Y").parse;
+var margin = {top: 20, right: 160, bottom: 35, left: 30};
 
+var width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
 
+var svg = d3.select("body")
+  .append("svg")
+  .attr("width", width + margin.left + margin.right)
+  .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var parse = d3.timeFormat("%Y").parse;
 // Transpose the data into layers
-var dataset = d3.layout.stack()(["Fitness Trainers and Aerobic Instructors", 
+var dataset = d3.layout.stack(["Fitness Trainers and Aerobic Instructors", 
 "Athletes and Sports Competitors", "Athletic Trainers",
  "Recreation and Fitness Studies Teachers", "Health Educators","Dietitians and Nutritionists"]
  .map(function(fitness) {
@@ -92,13 +102,14 @@ legend.append("text")
   .style("text-anchor", "start")
   .text(function(d, i) { 
     switch (i) {
-      case 0: return "Anjou pears";
-      case 1: return "Naval oranges";
-      case 2: return "McIntosh apples";
-      case 3: return "Red Delicious apples";
+      case 0: return "Fitness Trainers and Aerobic Instructors";
+      case 1: return "Athletes and Sports Competitors";
+      case 2: return "Athletic Trainers";
+      case 3: return "Recreation and Fitness Studies Teachers";
+      case 4: return "Health Educators";
+      case 5: return "Dietitians and Nutritionists"
     }
   });
-
 
 // Prep the tooltip bits, initial display is hidden
 var tooltip = svg.append("g")

@@ -44,7 +44,7 @@ Question text,
 DataValueUnit text,
 DataValueType text,
 DataValue Numeric,
-DataValueAlt Numeric,
+DataValueAlt Numeric, --
 DatavalueFootnote text,
 LowConfidenceLimit Numeric,
 HighConfidenceLimit Numeric,

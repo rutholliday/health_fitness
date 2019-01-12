@@ -2,7 +2,7 @@
 
 
 ![health_fitness](health_trends.png)
-![health_fitness}(health_trends_2.png)
+![health_fitness](health_trends_2.png)
 
 
 Tell a story

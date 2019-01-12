@@ -5,6 +5,8 @@
 ![health_fitness](health_trends_2.png)
 
 
+
+                                                OUR MISSION 
 Tell a story
 Through data visualizations
 Providing users an interactive means to explore data themselves

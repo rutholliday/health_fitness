@@ -10,6 +10,9 @@ var svg = d3.select("body")
   .append("g")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+d3.csv("occupation_fitness.csv", function(error, fitnessData){
+  
+})
 var parse = d3.timeFormat("%Y").parse;
 // Transpose the data into layers
 var dataset = d3.layout.stack(["Fitness Trainers and Aerobic Instructors", 

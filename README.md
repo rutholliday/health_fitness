@@ -1,7 +1,7 @@
 # health_fitness
 
 
-![health_fitness] (health_trends.png)
+![health_fitness-] (health_trends.png)
 
 
 Tell a story

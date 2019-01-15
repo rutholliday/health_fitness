@@ -1,0 +1,78 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+h1, .sub-section {
+  text-align: center;
+}
+
+h1.section {
+  margin-bottom: 250px;
+  font-size: 60px;
+}
+
+h1.main-header {
+  font-size: 70px;
+  margin-bottom: 50px;
+}
+
+body.w3-light-grey {
+  background-color: white !important;
+}
+
+.axis {
+  font: 14px sans-serif;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 2px;
+}
+
+.hero-image {
+  width: 1100px;
+  margin-bottom: 100px;
+}
+
+.intro-text {
+  margin-bottom: 100px;
+  font-size: 24px;
+}
+
+.pic-chart {
+  display: inline-block;
+  margin-bottom: 250px;
+}
+
+.pic-chart img {
+  width: 450px;
+  float: left;
+  height: 400px;
+}
+
+.image-shadow img {
+  box-shadow: 5px 5px 10px 1px grey;
+}
+
+#vegan, #vegetarian, #whole-foods, #fitness, #exercise, #health-occupations, #influencer, #heart-disease, #medications, #anxiety, #depression, #spa {
+  width: 50%;
+  float: right;
+}
+
+div[id*='modebar'] {
+  display: none;
+}
+
+.method-images {
+  width: 15%;
+  margin-right: 25px;
+}
+
+.sub-section {
+  margin-bottom: 100px;
+  margin-left: 150px;
+  margin-right: 150px;
+}

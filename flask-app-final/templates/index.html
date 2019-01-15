@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <title>Basic Flask Plotlyjs Example</title>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel= "stylesheet" type= "text/css" href="static/styles/styles.css">
+  <style>
+  html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.min.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.min.js"></script> -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+
+<body class="w3-light-grey">
+
+  <!-- Top container -->
+  <div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
+    <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button>
+  </div>
+
+  <!-- Sidebar/menu -->
+  <nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:250px;" id="mySidebar"><br>
+    <hr>
+    <div class="w3-container">
+      <h5>Dashboard</h5>
+    </div>
+    <div class="w3-bar-block">
+      <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>Close Menu</a>
+      <a class="w3-bar-item w3-button w3-padding" onclick="smoothScroll(document.getElementById('health-food'));">Health Food Craze</a>
+      <a class="w3-bar-item w3-button w3-padding" onclick="smoothScroll(document.getElementById('fitness-frenzy'));">Fitness Frenzy</a>
+      <a class="w3-bar-item w3-button w3-padding" onclick="smoothScroll(document.getElementById('healthier'));">Are we getting healthier?</a>
+      <a class="w3-bar-item w3-button w3-padding" onclick="smoothScroll(document.getElementById('heart-health'));">Heart Health</a>
+      <a class="w3-bar-item w3-button w3-padding" onclick="smoothScroll(document.getElementById('mental-health'));">Mental Health</a>
+      <a class="w3-bar-item w3-button w3-padding" onclick="smoothScroll(document.getElementById('conclusion'));">Conclusion</a>
+    </div>
+  </nav>
+
+  <script>
+  window.smoothScroll = function(target) {
+    var scrollContainer = target;
+    do { //find scroll container
+        scrollContainer = scrollContainer.parentNode;
+        if (!scrollContainer) return;
+        scrollContainer.scrollTop += 1;
+    } while (scrollContainer.scrollTop == 0);
+
+    var targetY = 0;
+    do { //find the top of target relatively to the container
+        if (target == scrollContainer) break;
+        targetY += target.offsetTop;
+    } while (target = target.offsetParent);
+
+    scroll = function(c, a, b, i) {
+        i++; if (i > 30) return;
+        c.scrollTop = a + (b - a) / 30 * i;
+        setTimeout(function(){ scroll(c, a, b, i); }, 20);
+    }
+    // start scrolling
+    scroll(scrollContainer, scrollContainer.scrollTop, targetY, 0);
+}
+  </script>
+
+  <!-- Overlay effect when opening sidebar on small screens -->
+  <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+  <!-- !PAGE CONTENT! -->
+  <div class="w3-main" style="margin-left:250px;margin-top:43px;">
+
+    <!-- Header -->
+    <header class="w3-container" style="padding-top:22px">
+      <h1 class='main-header'>Health Trends and Society: A Deeper Look</h1>  
+    </header>
+    
+    <div class="w3-row-padding w3-margin-bottom">
+      
+      <!-- <div class="w3-quarter">
+        <div class="w3-container w3-red w3-padding-16">
+          <div class="w3-left"><i class="fa fa-comment w3-xxxlarge"></i></div>
+          <div class="w3-right">
+            <h3>52</h3>
+          </div>
+          <div class="w3-clear"></div>
+          <h4>Messages</h4>
+        </div>
+      </div>
+      <div class="w3-quarter">
+        <div class="w3-container w3-blue w3-padding-16">
+          <div class="w3-left"><i class="fa fa-eye w3-xxxlarge"></i></div>
+          <div class="w3-right">
+            <h3>99</h3>
+          </div>
+          <div class="w3-clear"></div>
+          <h4>Views</h4>
+        </div>
+      </div>
+      <div class="w3-quarter">
+        <div class="w3-container w3-teal w3-padding-16">
+          <div class="w3-left"><i class="fa fa-share-alt w3-xxxlarge"></i></div>
+          <div class="w3-right">
+            <h3>23</h3>
+          </div>
+          <div class="w3-clear"></div>
+          <h4>Shares</h4>
+        </div>
+      </div>
+      <div class="w3-quarter">
+        <div class="w3-container w3-orange w3-text-white w3-padding-16">
+          <div class="w3-left"><i class="fa fa-users w3-xxxlarge"></i></div>
+          <div class="w3-right">
+            <h3>50</h3>
+          </div>
+          <div class="w3-clear"></div>
+          <h4>Users</h4>
+        </div>
+      </div>
+    </div> -->
+
+    <h3 style='font-weight: bold; text-align: center; margin-bottom: 75px;'>
+        Tyler Alev, Andy Binkley, Annie Diaz, Lucas Santos, Ruth Holliday
+    </h3>
+    
+    <img class='hero-image' src='static/images/healthy-hero-2.jpg' />
+
+    <div class="w3-panel">
+      <!-- <div id='organic'></div> -->
+
+      <div class='intro-text'>
+
+        <p style="margin-bottom: 50px;">
+          For this project, we decided to explore health and wellness trends in America and its overall impact on society. More specifically, we wanted to investigate the
+          deeper level of health trends and attempt to discover some creative ways for showing the "health wave"
+          across America.
+        </p>
+
+        <h2 style='font-weight: bold;'>
+          Questions we wanted to ask:
+        </h2>
+        <h2>
+          When did this health wave begin to develop?
+        </h2>
+        <h2>
+            Has there been any preliminary impact on our health?
+          </h2>
+        <h2 style="margin-bottom: 50px;">
+            To what extent does digital media let us see these health trends?
+        </h2>
+
+        <h2 style='font-weight: bold;'>
+          Our strategy:
+        </h2>
+        <h2>
+          Identify as many possible indicators of a wellness trend (and its impact) across the US such as:
+        </h2>
+        <ul style="margin-bottom: 50px;">
+          <li>
+            Health-related companies opening new locations (Spas, Whole Foods)
+          </li>
+          <li>
+            Popularity of health and wellness terms used in publications
+          </li>
+          <li>
+            Popularity of fitness occupations across the US
+          </li>
+          <li>
+            Fitness influencers beginning their online presence
+          </li>
+          <li>
+            Prescription drug usage
+          </li>
+          <li>
+            Heart disease stats
+          </li>
+          <li>
+            <i>Negative</i> mental health article trends
+          </li>
+        </ul>
+
+        <h2 style='font-weight: bold;'>
+            Our method:
+          </h2>
+
+          <div>
+            <img class='method-images' src='static/images/bsoup.png' />
+            
+            <img class='method-images' src='static/images/nyt.png' />
+
+            <img class='method-images' src='static/images/wayback.png' />
+
+            <img class='method-images' src='static/images/cdc.jpg' />
+          </div>
+          
+          <div>
+            <img class='method-images' src='static/images/labor.png' />
+
+            <img class='method-images' src='static/images/whole-foods-logo.png' />
+
+            <img class='method-images' src='static/images/spafinder.png' />
+            
+            <img class='method-images' src='static/images/greatist.png' />
+          </div>
+
+      </div>
+
+      <hr style='margin-top: 130px; margin-bottom: 150px;'>
+
+      <h1 class='section' id='health-food'>
+        The Health Food Craze
+      </h1>
+      
+  
+      <h2 class='sub-section'>
+        The number of articles in the NYT that contained the word "vegan" increased 327% from 2006 to 2011 (87 to 371)
+      </h2>
+
+      <div>
+          <div class='pic-chart image-shadow'>
+            <img src='static/images/vegan-nyt.png' />
+            <div id='vegan'></div>
+        </div>
+        </div>
+      
+
+        <h2 class='sub-section'>
+          The number of articles in the NYT that contained the word "vegetarian" increased 208% from 2006 to 2011 (185 to 569)
+        </h2>
+
+        <div>
+          <div class='pic-chart image-shadow'>
+            <img src='static/images/vegetarian-nyt.png' />
+            <div id='vegetarian'></div>
+          </div>
+        </div>
+        
+        <h2 class='sub-section'>
+          Sometime during 2012, Whole Foods opened roughly 147% more stores than in the previous year (17 to 42)
+        </h2>
+
+        <div>
+          <div class='pic-chart image-shadow'>
+              <img src='static/images/whole-foods-location.jpg' />
+              <div id='whole-foods'></div>
+          </div>
+        </div>
+
+      <h1 class='section' id='fitness-frenzy'>
+        The Fitness Frenzy
+      </h1>
+
+      <h2 class='sub-section'>
+        The number of articles in the NYT that contained the word "fitness" increased 139% from 2004 to 2011 (469 to 1,121)
+      </h2>
+
+      <div>
+          <div class='pic-chart image-shadow'>
+              <img src='static/images/fitness-nyt.png' />
+              <div id='fitness'></div>
+          </div>
+        </div>
+        
+        
+        <h2 class='sub-section'>
+          The number of articles in the NYT that contained the word "exercise" increased 60% from 2005 to 2012 (2,003 to 3,196)
+        </h2>
+        
+        <div>
+          <div class='pic-chart image-shadow'>
+              <img src='static/images/exercise-nyt.png' />
+              <div id='exercise'></div>
+          </div>
+        </div>
+        
+        <h2 class='sub-section'>
+          The number of people classified as "Fitness Trainers" saw its biggest increase from 2015 to 2017 with 18% growth (237,000 to 280,000)
+        </h2>
+
+        <div>
+          <div class='pic-chart image-shadow'>
+              <img src='static/images/cycling-instructor.jpg' />
+              <div id='health-occupations'></div>
+            </div>
+        </div>
+        
+        <h2 class='sub-section'>
+          Nearly half of Greatist's Top 100 "Fitness Influencers" didn't have an online presence until approximately 2012 or after.
+        </h2>
+
+        <div>
+          <div class='pic-chart'>
+              <img src='static/images/fitness-influencer.jpg' />
+              <div id='influencer'></div>
+          </div>
+        </div>
+
+        <h1 class='section' id='healthier'>
+            So...are we getting healthier?
+        </h1>
+
+        <h2 class='sub-section'>
+          First, let's look at one additional factor we're doing to try and stay healthy...medication.
+          <br />
+          <br />
+          Americans are taking more prescription drugs than ever before. Since 1988, the 2 least consumed prescription drugs
+          have now become the <i>most</i> consumed prescription drugs (Cholesterol and Depression).
+        </h2>
+
+      <div>
+        <div class='pic-chart '>
+            <img src='static/images/medication.jpeg' />
+            <div id='medications'></div>
+        </div>
+      </div>
+
+      <h1 class='section' id='heart-health'>
+        So is all that cholesterol medication helping?
+      </h1>
+
+        <h2 class='sub-section'>
+          When we zoom out it sure seems like it. But when we narrow our range to 2008 it shows a slightly different story.
+          <br />
+          <br />
+          In fact, 2015 saw its first <i>increase</i> in heart disease deaths since 1993 (and 1993 was the <u>only</u> other time it increased).
+        </h2>
+
+        <div>
+          <div class='pic-chart image-shadow'>
+              <img src='static/images/heart-health.jpg' />
+              <div id='heart-disease'></div>
+          </div>
+        </div>
+
+        <h1 class='section' id='mental-health'>
+            Now for our mental health checkup
+        </h1>
+
+        <h2 class='sub-section'>
+          The number of articles in the NYT that contained the word "anxiety" increased 95% from 2004 to 2011 (1,023 to 1,990)
+        </h2>
+
+        <div>
+          <div class='pic-chart image-shadow'>
+              <img src='static/images/anxiety-nyt.png' />
+              <div id='anxiety'></div>
+          </div>
+        </div>
+
+        <h2 class='sub-section'>
+          Contrary to what we thought, depression articles have not seen the same amount of press as anxiety ones despite
+          what the medication chart showed us.
+          <br />
+          <br />
+          The huge spike is also most likely tied to the '07-'09 Recession being compared to the Great Depression. 
+        </h2>
+
+        <div>
+            <div class='pic-chart image-shadow'>
+                <img src='static/images/depression-nyt.png' />
+                <div id='depression'></div>
+              </div>
+          </div>
+
+        <div class='pic-chart' style='width: 100%;'>
+          <div id='drug-od'></div>
+        </div>
+
+        <h1 class='section' id='spa-openings'>
+          But with great stress comes great re"spa"nsibility
+        </h1>
+
+        <h2 class='sub-section'>
+          63% of all the spas in the US found on Spafinder.com didn't come to be until 2010 or later.
+        </h2>
+
+        <div>
+          <div class='pic-chart image-shadow'>
+              <img src='static/images/spiderman-spa.jpg' />
+              <div id='spa'></div>
+          </div>
+        </div>  
+
+        <h1 class='section' id='conclusion' style='margin-bottom: 100px;'>
+          Takeaways, Questions, and Considerations
+        </h1>
+
+        <h2 class='sub-section'>
+          Is America responding to a trend or creating one?
+        </h2>
+        <h2 class='sub-section'>
+          We think most of the "health wave" is dictated by millenials. A follow-up study to this one would be more focused on them.
+        </h2>
+        <h2 class='sub-section'>
+          We really wanted to scrape more health-related websites, specifically gyms, but many of their sites are either poorly
+          constructed where crawling wasn't possible or the Wayback Machine didn't have an accurate historical index for them.
+        </h2>
+        <h2 class='sub-section'>
+          Health data takes time to develop, so the recent health craze may not have seen its full effects yet.
+        </h2>
+        <h2 class='sub-section'>
+          Mental health, however, tends to be quicker to surface. Another follow-up to this study could potentially
+          include a deeper analysis around mental health trends in society.
+        </h2>
+
+
+
+        <!-- insert chart about anxiety google trends -->
+        <!-- insert chart about pharma industry -->
+        <!-- consider removing depression -->
+
+      <div class="w3-row-padding" style="margin:0 -16px">
+
+        <div class="w3-third">
+            <script>
+                d3.csv('static/resources/spa_website_launches.csv').then(function(data) {
+                  
+                  year = [];
+                  count = [];
+            
+                  Object.keys(data).forEach(function(key) {
+                    year.push(data[key].year);
+                    count.push(data[key].count);
+                    });
+            
+                    console.log(year);
+                    console.log(count)
+            
+                  d = [{
+                    "x": year,
+                    "y": count,
+                    type: 'bar'
+                    }]
+                  var LINE = document.getElementById('spa');
+                  var layout = {
+                    title: {
+                      text:'Spa Openings across the US',
+                    },
+                    width: 700,
+                    height: 400,
+                    xaxis: {
+                      linecolor: 'lightgrey',
+                      linewidth: 2,
+                      mirror: true
+                    },
+                    yaxis: {
+                      linecolor: 'lightgrey',
+                      linewidth: 2,
+                      mirror: true
+                    }
+                  };
+                  Plotly.plot(LINE, d, layout)
+                })
+            
+                d3.csv('static/resources/influencer-website-launch-dates.csv').then(function(data) {
+                  
+                  year = [];
+                  count = [];
+            
+                  Object.keys(data).forEach(function(key) {
+                    year.push(data[key].year);
+                    count.push(data[key].count);
+                    });
+            
+                    console.log(year);
+                    console.log(count)
+            
+                  d = [{
+                    "x": year,
+                    "y": count,
+                    type: 'bar'
+                    }]
+                  var LINE = document.getElementById('influencer');
+                  var layout = {
+                    title: {
+                      text:'Fitness Influencer Website Launches',
+                    },
+                    width: 700,
+                    height: 400,
+                    xaxis: {
+                      linecolor: 'lightgrey',
+                      linewidth: 2,
+                      mirror: true
+                    },
+                    yaxis: {
+                      linecolor: 'lightgrey',
+                      linewidth: 2,
+                      mirror: true
+                    }
+                  };
+                  Plotly.plot(LINE, d, layout)
+                })
+            
+                d3.json('/vegan').then(function(data) {
+                  var LINE = document.getElementById('vegan');
+                  var layout = {
+                    title: {
+                      text:'# Times "Vegan" Appeared in NYT Article',
+                    },
+                    width: 700,
+                    height: 400,
+                    xaxis: {
+                      linecolor: 'lightgrey',
+                      linewidth: 2,
+                      mirror: true
+                    },
+                    yaxis: {
+                      linecolor: 'lightgrey',
+                      linewidth: 2,
+                      mirror: true
+                    }
+                  };
+                  Plotly.plot(LINE, data, layout)
+                })
+            
+                d3.json('/vegetarian').then(function(data) {
+                  var LINE = document.getElementById('vegetarian');
+                  var layout = {
+                    title: {
+                      text:'# Times "Vegetarian" Appeared in NYT Article',
+                    },
+                    width: 700,
+                    height: 400,
+                    xaxis: {
+                      linecolor: 'lightgrey',
+                      linewidth: 2,
+                      mirror: true
+                    },
+                    yaxis: {
+                      linecolor: 'lightgrey',
+                      linewidth: 2,
+                      mirror: true
+                    }
+                  };
+                  Plotly.plot(LINE, data, layout)
+                })
+            
+                d3.csv('static/resources/whole-foods.csv').then(function(data) {
+                  
+                  year = [];
+                  count = [];
+            
+                  Object.keys(data).forEach(function(key) {
+                    year.push(data[key].year);
+                    count.push(data[key].count);
+                    });
+            
+                    console.log(year);
+                    console.log(count)
+            
+                  d = [{
+                    "x": year,
+                    "y": count,
+                    type: 'line'
+                    }]
+                  var LINE = document.getElementById('whole-foods');
+                  var layout = {
+                    title: {
+                      text:'Whole Foods Openings in US (& Canada)',
+                    },
+                    width: 700,
+                    height: 400,
+                    xaxis: {
+                      linecolor: 'lightgrey',
+                      linewidth: 2,
+                      mirror: true
+                    },
+                    yaxis: {
+                      linecolor: 'lightgrey',
+                      linewidth: 2,
+                      mirror: true
+                    }
+                  };
+                  Plotly.plot(LINE, d, layout)
+                })
+            
+                d3.json('/fitness').then(function(data) {
+                  var LINE = document.getElementById('fitness');
+                  var layout = {
+                    title: {
+                      text:'# Times "Fitness" Appeared in NYT Article',
+                    },
+                    width: 700,
+                    height: 400,
+                    xaxis: {
+                      linecolor: 'lightgrey',
+                      linewidth: 2,
+                      mirror: true
+                    },
+                    yaxis: {
+                      linecolor: 'lightgrey',
+                      linewidth: 2,
+                      mirror: true
+                    }
+                  };
+                  Plotly.plot(LINE, data, layout)
+                })
+            
+                d3.json('/exercise').then(function(data) {
+                  var LINE = document.getElementById('exercise');
+                  var layout = {
+                    title: {
+                      text:'# Times "Exercise" Appeared in NYT Article',
+                    },
+                    width: 700,
+                    height: 400,
+                    xaxis: {
+                      linecolor: 'lightgrey',
+                      linewidth: 2,
+                      mirror: true
+                    },
+                    yaxis: {
+                      linecolor: 'lightgrey',
+                      linewidth: 2,
+                      mirror: true
+                    }
+                  };
+                  Plotly.plot(LINE, data, layout)
+                })
+            
+                d3.json('/depression').then(function(data) {
+                  var LINE = document.getElementById('depression');
+                  var layout = {
+                    title: {
+                      text:'# Times "Depression" Appeared in NYT Article',
+                    },
+                    width: 700,
+                    height: 400,
+                    xaxis: {
+                      linecolor: 'lightgrey',
+                      linewidth: 2,
+                      mirror: true
+                    },
+                    yaxis: {
+                      linecolor: 'lightgrey',
+                      linewidth: 2,
+                      mirror: true
+                    }
+                  };
+                  Plotly.plot(LINE, data, layout)
+                })
+            
+                d3.json('/anxiety').then(function(data) {
+                  var LINE = document.getElementById('anxiety');
+                  var layout = {
+                    title: {
+                      text:'# Times "Anxiety" Appeared in NYT Article',
+                    },
+                    width: 700,
+                    height: 400,
+                    xaxis: {
+                      linecolor: 'lightgrey',
+                      linewidth: 2,
+                      mirror: true
+                    },
+                    yaxis: {
+                      linecolor: 'lightgrey',
+                      linewidth: 2,
+                      mirror: true
+                    }
+                  };
+                  Plotly.plot(LINE, data, layout)
+                })
+            
+            
+            
+                d3.csv('static/resources/health_occupations/athletes.csv').then(function(athlete_data) {
+            
+                  d3.csv('static/resources/health_occupations/athletic_trainers.csv').then(function(athletic_trainer_data) {
+            
+                    d3.csv('static/resources/health_occupations/diet_nutritionists.csv').then(function(nutritionist_data) {
+            
+                      d3.csv('static/resources/health_occupations/fitness_trainers.csv').then(function(fitness_trainer_data) {
+            
+                        d3.csv('static/resources/health_occupations/health_educators.csv').then(function(health_educator_data) {
+            
+                          d3.csv('static/resources/health_occupations/rec_fitness_teachers.csv').then(function(rec_fit_data) {
+                  
+                  year = [];
+                  athletes_count = [];
+                  athletic_trainer_count = [];
+                  nutritionist_count = [];
+                  fitness_trainer_count = [];
+                  health_educator_count = [];
+                  rec_fit_count = [];
+            
+                  Object.keys(athlete_data).forEach(function(key) {
+                    year.push(athlete_data[key].year);
+                    athletes_count.push(athlete_data[key].athletes);
+                    });
+            
+                  Object.keys(athletic_trainer_data).forEach(function(key) {
+                    year.push(athletic_trainer_data[key].year);
+                    athletic_trainer_count.push(athletic_trainer_data[key].athletic_trainers);
+                    });
+            
+                  Object.keys(nutritionist_data).forEach(function(key) {
+                    year.push(nutritionist_data[key].year);
+                    nutritionist_count.push(nutritionist_data[key].dietitians_nutritionists);
+                    });
+            
+                  Object.keys(fitness_trainer_data).forEach(function(key) {
+                    year.push(fitness_trainer_data[key].year);
+                    fitness_trainer_count.push(fitness_trainer_data[key].fittness_trainers);
+                    });
+            
+                  Object.keys(health_educator_data).forEach(function(key) {
+                    year.push(health_educator_data[key].year);
+                    health_educator_count.push(health_educator_data[key].health_educators);
+                    });
+            
+                  Object.keys(rec_fit_data).forEach(function(key) {
+                    year.push(rec_fit_data[key].year);
+                    rec_fit_count.push(rec_fit_data[key].rec_fitness_teachers);
+                    });
+            
+                  var trace1 = {
+                    "x": year,
+                    "y": athletes_count,
+                    type: 'line',
+                    name: 'Athletes'
+                    }
+            
+                  var trace2 = {
+                    "x": year,
+                    "y": athletic_trainer_count,
+                    type: 'line',
+                    name: 'Athletic Trainers'
+                  }
+            
+                  var trace3 = {
+                    "x": year,
+                    "y": nutritionist_count,
+                    type: 'line',
+                    name: 'Nutritionists'
+                  }
+            
+                  var trace4 = {
+                    "x": year,
+                    "y": fitness_trainer_count,
+                    type: 'line',
+                    name: 'Fitness Trainers'
+                  }
+            
+                  var trace5 = {
+                    "x": year,
+                    "y": health_educator_count,
+                    type: 'line',
+                    name: 'Health Educators'
+                  }
+            
+                  var trace6 = {
+                    "x": year,
+                    "y": rec_fit_count,
+                    type: 'line',
+                    name: 'Recreation Fitness Teachers'
+                  }
+            
+                  var d = [trace1, trace2, trace3, trace4, trace5, trace6]
+            
+                  var LINE = document.getElementById('health-occupations');
+                  var layout = {
+                    title: {
+                      text:'Health Occupations',
+                    },
+                    width: 700,
+                    height: 400,
+                    showlegend: true,
+                    legend: {'orientation': 'h',
+                    font: {
+                      size: 10
+                    }
+                  },
+                  xaxis: {
+                      linecolor: 'lightgrey',
+                      linewidth: 2,
+                      mirror: true
+                    },
+                    yaxis: {
+                      linecolor: 'lightgrey',
+                      linewidth: 2,
+                      mirror: true
+                    }
+                };
+                  Plotly.plot(LINE, d, layout)
+                      })
+                    })
+                  })
+                })
+              })
+            })
+            
+            
+            d3.csv('static/resources/healthcare/medications/anxiety.csv').then(function(anxiety_data) {
+            
+            d3.csv('static/resources/healthcare/medications/cholesterol.csv').then(function(cholesterol_data) {
+            
+              d3.csv('static/resources/healthcare/medications/depression.csv').then(function(depression_data) {
+            
+                d3.csv('static/resources/healthcare/medications/diabetes.csv').then(function(diabetes_data) {
+            
+                  d3.csv('static/resources/healthcare/medications/hbp.csv').then(function(hbp_data) {
+            
+                    d3.csv('static/resources/healthcare/medications/pain.csv').then(function(pain_data) {
+            
+                      d3.csv('static/resources/healthcare/medications/ulcer.csv').then(function(ulcer_data) {
+            
+            year = [];
+            anxiety_percent = [];
+            cholesterol_percent = [];
+            depression_percent = [];
+            diabetes_percent = [];
+            hbp_percent = [];
+            pain_percent = [];
+            ulcer_percent = [];
+            
+            Object.keys(anxiety_data).forEach(function(key) {
+              year.push(anxiety_data[key].year);
+              anxiety_percent.push(anxiety_data[key].anxiety);
+              });
+            
+            Object.keys(cholesterol_data).forEach(function(key) {
+              year.push(cholesterol_data[key].year);
+              cholesterol_percent.push(cholesterol_data[key].cholesterol);
+              });
+            
+            Object.keys(depression_data).forEach(function(key) {
+              year.push(depression_data[key].year);
+              depression_percent.push(depression_data[key].depression);
+              });
+            
+            Object.keys(diabetes_data).forEach(function(key) {
+              year.push(diabetes_data[key].year);
+              diabetes_percent.push(diabetes_data[key].diabetes);
+              });
+            
+            Object.keys(hbp_data).forEach(function(key) {
+              year.push(hbp_data[key].year);
+              hbp_percent.push(hbp_data[key].hbp);
+              });
+            
+            Object.keys(pain_data).forEach(function(key) {
+              year.push(pain_data[key].year);
+              pain_percent.push(pain_data[key].pain);
+              });
+            
+            Object.keys(ulcer_data).forEach(function(key) {
+              year.push(ulcer_data[key].year);
+              ulcer_percent.push(ulcer_data[key].ulcer);
+              });
+            
+            var trace1 = {
+              "x": year,
+              "y": anxiety_percent,
+              type: 'line',
+              name: 'Anxiety'
+              }
+            
+            var trace2 = {
+              "x": year,
+              "y": cholesterol_percent,
+              type: 'line',
+              name: 'Cholesterol'
+            }
+            
+            var trace3 = {
+              "x": year,
+              "y": depression_percent,
+              type: 'line',
+              name: 'Depression'
+            }
+            
+            var trace4 = {
+              "x": year,
+              "y": diabetes_percent,
+              type: 'line',
+              name: 'Diabetes'
+            }
+            
+            var trace5 = {
+              "x": year,
+              "y": hbp_percent,
+              type: 'line',
+              name: 'HBP'
+            }
+            
+            var trace6 = {
+              "x": year,
+              "y": pain_percent,
+              type: 'line',
+              name: 'Pain'
+            }
+            
+            var trace7 = {
+              "x": year,
+              "y": ulcer_percent,
+              type: 'line',
+              name: 'Ulcer'
+            }
+            
+            var d = [trace1, trace2, trace3, trace4, trace5, trace6, trace7]
+            
+            var LINE = document.getElementById('medications');
+            var layout = {
+              title: {
+                text:'Medications used in past 30 days (% of population)',
+              },
+              width: 700,
+              height: 400,
+              xaxis: {
+                      linecolor: 'lightgrey',
+                      linewidth: 2,
+                      mirror: true
+                    },
+                    yaxis: {
+                      linecolor: 'lightgrey',
+                      linewidth: 2,
+                      mirror: true
+                    },
+              showlegend: true,
+                      legend: {'orientation': 'h',
+                      font: {
+                        size: 10
+                      }
+                    }
+                  };
+            Plotly.plot(LINE, d, layout)
+                })
+              })
+            })
+            })
+            })
+            })
+            })
+            
+            
+            
+            
+            
+            
+            
+            
+            d3.csv('static/resources/healthcare/heart-disease.csv').then(function(data) {
+              
+              year = [];
+              heart_disease_deaths = [];
+            
+              Object.keys(data).forEach(function(key) {
+                    year.push(data[key].year);
+                    heart_disease_deaths.push(data[key].heart_disease);
+                    });
+            
+                d = [{
+                  "x": year,
+                  "y": heart_disease_deaths,
+                  type: 'line'
+                }]
+              var LINE = document.getElementById('heart-disease');
+              var layout = {
+                title: {
+                text:'Heart Disease Deaths per 100,000'
+              },
+                width: 700,
+                height: 400,
+                xaxis: {
+                      linecolor: 'lightgrey',
+                      linewidth: 2,
+                      mirror: true
+                    },
+                    yaxis: {
+                      linecolor: 'lightgrey',
+                      linewidth: 2,
+                      mirror: true
+                    }
+            };
+                  Plotly.plot(LINE, d, layout)
+            
+            })
+            
+            d3.csv('static/resources/healthcare/drug_overdoses.csv').then(function(data) {
+              
+              year = [];
+              od_deaths = [];
+            
+              Object.keys(data).forEach(function(key) {
+                    year.push(data[key].year);
+                    od_deaths.push(data[key].drug_overdose);
+                    });
+            
+                d = [{
+                  "x": year,
+                  "y": od_deaths,
+                  type: 'line'
+                }]
+              var LINE = document.getElementById('drug-od');
+              var layout = {
+                title: {
+                text:'Drug OD Deaths per 100,000'
+              },
+              xaxis: {
+                      linecolor: 'lightgrey',
+                      linewidth: 2,
+                      mirror: true
+                    },
+                    yaxis: {
+                      linecolor: 'lightgrey',
+                      linewidth: 2,
+                      mirror: true
+                    }
+            };
+                  Plotly.plot(LINE, d, layout)
+            
+            })
+            
+              </script>
+        </div>
+      </div>
+    </div>
+
+
+    <hr>
+
+    <script>
+  
+        // Define SVG area dimensions
+    // var svgWidth = 960;
+    // var svgHeight = 500;
+    
+    // // Define the chart's margins as an object
+    // var margin = {
+    //   top: 60,
+    //   right: 60,
+    //   bottom: 60,
+    //   left: 60
+    // };
+    
+    // // Define dimensions of the chart area
+    // var chartWidth = svgWidth - margin.left - margin.right;
+    // var chartHeight = svgHeight - margin.top - margin.bottom;
+    
+    // // Select body, append SVG area to it, and set its dimensions
+    // var svg = d3.select("#organic")
+    //   .append("svg")
+    //   .attr("width", svgWidth)
+    //   .attr("height", svgHeight);
+    
+    // // Append a group area, then set its margins
+    // var chartGroup = svg.append("g")
+    //   .attr("transform", `translate(${margin.left}, ${margin.top})`);
+    
+    // // Configure a parseTime function which will return a new Date object from a string
+    // var parseTime = d3.timeParse("%Y");
+    
+    // // Load data from forcepoints.csv
+    // d3.json("/organic_nyt").then(function(forceData) {
+    
+    //   // Throw an error if one occurs
+    //   // if (error) throw error;
+    
+    //   // Print the forceData
+    //   console.log(forceData);
+    //   console.log(forceData[0].year);
+    //   console.log(forceData[0].count);
+    
+    //   // Format the date and cast the force value to a number
+    //   forceData.forEach(function(data) {
+    //     data.year = parseTime(data.year);
+    //     data.count = +data.count;
+    //   });
+    
+    //   // Configure a time scale
+    //   // d3.extent returns the an array containing the min and max values for the property specified
+    //   var xTimeScale = d3.scaleTime()
+    //     .domain(d3.extent(forceData, data => data.year))
+    //     .range([0, chartWidth]);
+    
+    //   // Configure a linear scale with a range between the chartHeight and 0
+    //   var yLinearScale = d3.scaleLinear()
+    //     .domain([0, d3.max(forceData, data => data.count)])
+    //     .range([chartHeight, 0]);
+    
+    //   // Create two new functions passing the scales in as arguments
+    //   // These will be used to create the chart's axes
+    //   var bottomAxis = d3.axisBottom(xTimeScale);
+    //   var leftAxis = d3.axisLeft(yLinearScale);
+    
+    //   // Configure a line function which will plot the x and y coordinates using our scales
+    //   var drawLine = d3.line()
+    //     .x(data => xTimeScale(data.year))
+    //     .y(data => yLinearScale(data.count));
+    
+    //   // Append an SVG path and plot its points using the line function
+    //   chartGroup.append("path")
+    //     // The drawLine function returns the instructions for creating the line for forceData
+    //     .attr("d", drawLine(forceData))
+    //     .classed("line", true);
+    
+    //   // Append an SVG group element to the chartGroup, create the left axis inside of it
+    //   chartGroup.append("g")
+    //     .classed("axis", true)
+    //     .call(leftAxis);
+    
+    //   // Append an SVG group element to the chartGroup, create the bottom axis inside of it
+    //   // Translate the bottom axis to the bottom of the page
+    //   chartGroup.append("g")
+    //     .classed("axis", true)
+    //     .attr("transform", `translate(0, ${chartHeight})`)
+    //     .call(bottomAxis);
+    
+    //   chartGroup.append("text")
+    //     .attr("x", (width / 2))             
+    //     .attr("y", 0 - (margin.top / 2))
+    //     .attr("text-anchor", "middle")  
+    //     .style("font-size", "16px") 
+    //     .style("text-decoration", "underline")  
+    //     .text("Value vs Date Graph");
+    // });
+      
+      </script>
+
+  <!-- Footer -->
+  <footer class="w3-container w3-padding-16 w3-light-grey">
+
+  </footer>
+
+  <!-- End page content -->
+</div>
+</body>
+
+</html>
